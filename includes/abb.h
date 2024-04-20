@@ -40,7 +40,7 @@ void imprimirAbb(ABB A);
 
 
 
-int insertarElementoAbb(ABB *A, char* lexema, int compLex);
+int insertarElementoAbb(ABB *A, char* lexema, int compLex, union Valor valor);
 
 void suprimirElementoAbb(ABB *A, char *lexema);
 

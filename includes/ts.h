@@ -16,7 +16,7 @@ void inicializarTS();
  * @param compLex Componente lexico del elemento
  * @return int Componente lexico del elemento
  */
-int insertarLex(char* lexema, int compLex);
+int insertarLex(char* lexema, int compLex, union Valor valor);
 
 /**
  * @brief Elimina un elemento de la TS en caso de que exista
@@ -30,6 +30,14 @@ void eliminarLex(char* lexema);
  * 
  */
 void imprimirTS();
+
+/**
+ * @brief Comprueba si un identificador esta asociado a una funcion
+ * 
+ * @param id identificador a comprobar
+ * @return int 1 si es una función, 0 en caso contrario
+ */
+int esFuncion(char* id);
 
 /**
  * @brief Libera la memoria de la TS

@@ -11,7 +11,7 @@ int main(int argc, char **argv){
         nombreArchivo=*(argv+1);
     } else if(argc>2){
         imprimirError(NUM_PARAMETROS_INCORRECTO, 1);
-        return;
+        exit(EXIT_FAILURE);
     }
 
     abrirArchivo(nombreArchivo);

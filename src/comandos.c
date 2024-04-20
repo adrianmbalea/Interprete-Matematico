@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <strings.h>
 
+#include "../includes/definiciones.h"
 #include "../includes/comandos.h"
 #include "../includes/errores.h"
-#include "../includes/definiciones.h"
+
+int imprimirResultados = 1;
 
 /**
  * @brief Procesa los parametros de los diferentes comandos que puede haber

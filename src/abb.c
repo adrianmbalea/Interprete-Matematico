@@ -29,13 +29,14 @@ void destruirAbb(ABB *A) {
     }
 }
 
-int insertarElementoAbb(ABB *A, char* lexema, int compLex) {
+int insertarElementoAbb(ABB *A, char* lexema, int compLex, union Valor valor) {
     if (esAbbVacio(*A)) {
         *A = (ABB) malloc(sizeof (struct celda));
         (*A)->info.lexema = (char*)malloc(strlen(lexema)+1);
 		strcpy((*A)->info.lexema, lexema);
 		(*A)->info.lexema[strlen(lexema)] = '\0';
         (*A)->info.compLex=compLex;
+        (*A)->info.valor=valor;
         (*A)->izq = NULL;
         (*A)->der = NULL;
         return compLex;
@@ -46,11 +47,11 @@ int insertarElementoAbb(ABB *A, char* lexema, int compLex) {
         return (*A)->info.compLex;
     }
     if (comp > 0) { //lexema > (*A)->info.lexema
-        return insertarElementoAbb(&((*A)->der), lexema, compLex);
+        return insertarElementoAbb(&((*A)->der), lexema, compLex, valor);
     }
 
     //lexema < ( *A)->info.lexema 
-    return insertarElementoAbb(&((*A)->izq), lexema, compLex);
+    return insertarElementoAbb(&((*A)->izq), lexema, compLex, valor);
 }
 
 /* Funcion privada que devuelve mínimo de subárbol dcho */

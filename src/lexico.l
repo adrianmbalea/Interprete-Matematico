@@ -1,9 +1,12 @@
 %{
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
-#include "../includes/definiciones.h"
 #include "../includes/ts.h"
+#include "../includes/errores.h"
+#include "../includes/lex.yy.h"
 %}
 
 %option noyywrap noinput nounput yylineno
@@ -25,7 +28,7 @@ EXPONENCIAL ({PARTE_DIGITOS}|{PUNTO_FLOTANTE})[eE][\+-]?{PARTE_DIGITOS}
 NUMERO_FLOTANTE ({PUNTO_FLOTANTE}|{EXPONENCIAL})
 
 /*Comentarios*/
-COMENTARIO //.*
+COMENTARIO \/\/.*
 
 /* Operadores */
 OPERADOR_SIMPLE \+|-|\*|\/|%|\^|\<|\>|\(|\)|\[|\]|\{|\}|,|\.|;|=
@@ -41,12 +44,28 @@ PORCENTAJE_IGUAL %=
 
 %%
 
+{ID}                { if(esFuncion(yytext)){return FUNC;} else{return VAR;} }
+
+{NUMERO_ENTERO}     { return NUMERO; }
+{NUMERO_FLOTANTE}   { return NUMERO; }
+
+{OPERADOR_SIMPLE}   { return *yytext; }
+{MENOR_IGUAL}       { return MENOR_IGUAL; }
+{MAYOR_IGUAL}       { return MAYOR_IGUAL; }
+{IGUAL_IGUAL}       { return IGUAL_IGUAL; }
+{DISTINTO}          { return DISTINTO; }
+{MAS_IGUAL}         { return MAS_IGUAL; }
+{MENOS_IGUAL}       { return MENOS_IGUAL; }
+{POR_IGUAL}         { return POR_IGUAL; }
+{SLASH_IGUAL}       { return SLASH_IGUAL; }
+{PORCENTAJE_IGUAL}  { return PORCENTAJE_IGUAL; }
 
 
+{COMENTARIO}        /* ignoramos los comentarios */
 
-[[:space:]] /* ignoramos los espacios */
+[[:space:]]         /* ignoramos los espacios */
 
-. { imprimirError(LEXEMA_MAL_FORMADO, yylineno); return -2; }
+.                   { imprimirError(LEXEMA_MAL_FORMADO, yylineno); return -2; }
 
 <<EOF>> { yyterminate(); }
 
