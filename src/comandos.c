@@ -54,26 +54,15 @@ void _liberarParametros(int argc, char ***argv) {
     *argv = NULL;
 }
 
-void echo(char* parametros){
-    int argc;
-    char **argv;
-    _procesarParametros(parametros, &argc, &argv);
-
-    if(argc!=1){
-        imprimirError(PARAMETROS_INCORRECTOS_CMD, 1);
-        _liberarParametros(argc, &argv);
-        return;
-    }
-
-    if(!strcasecmp(*(argv+1), "on")){
+void echo(char* parametro){
+    if(!strcasecmp(parametro, "on")){
         imprimirResultados=1;
-    } else if(!strcasecmp(*(argv+1), "off")){
+    } else if(!strcasecmp(parametro, "off")){
         imprimirResultados=0;
     } else {
-        imprimirError(PARAMETROS_INCORRECTOS_CMD, 1);
+        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
     }
 
-    _liberarParametros(argc, &argv);
     return;
 }
 
@@ -83,7 +72,7 @@ void quit(char* parametros){
     _procesarParametros(parametros, &argc, &argv);
 
     if(argc!=0){
-        imprimirError(PARAMETROS_INCORRECTOS_CMD, 1);
+        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
         _liberarParametros(argc, &argv);
         return;
     }
@@ -98,7 +87,7 @@ void workspace(char* parametros){
     _procesarParametros(parametros, &argc, &argv);
 
     if(argc!=0){
-        imprimirError(PARAMETROS_INCORRECTOS_CMD, 1);
+        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
         _liberarParametros(argc, &argv);
         return;
     }
@@ -115,7 +104,7 @@ void clear(char* parametros){
     _procesarParametros(parametros, &argc, &argv);
 
     if(argc!=0){
-        imprimirError(PARAMETROS_INCORRECTOS_CMD, 1);
+        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
         _liberarParametros(argc, &argv);
         return;
     }
@@ -132,7 +121,7 @@ void help(char* parametros){
     _procesarParametros(parametros, &argc, &argv);
 
     if(argc!=0){
-        imprimirError(PARAMETROS_INCORRECTOS_CMD, 1);
+        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
         _liberarParametros(argc, &argv);
         return;
     }
@@ -149,7 +138,7 @@ void load(char* parametros){
     _procesarParametros(parametros, &argc, &argv);
 
     if(argc!=0){
-        imprimirError(PARAMETROS_INCORRECTOS_CMD, 1);
+        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
         _liberarParametros(argc, &argv);
         return;
     }

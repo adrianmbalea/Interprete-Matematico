@@ -1,12 +1,14 @@
 #opciones de compilacion, muestra todos los warnings (-Wall)
 CC=gcc -Wall
+
+LIBS = -lm
 #carpeta de las cabeceras (si estan en la actual, ponemos .)
 HEADER_FILES_DIR = ./includes/
 #opciones de compilacion, indica donde estan los archivos .h
 INCLUDES = -I $(HEADER_FILES_DIR)
 
 #nombre del ejecutable o archivo de salida
-OUTPUT = analizadorLexicoPython
+OUTPUT = interpreteMatematico
 
 #ficheros .h.  Si hay varios, se precede cada uno con $(HEADER_FILES_DIR)/
 LIB_HEADERS = $(wildcard $(HEADER_FILES_DIR)/*.h)
@@ -21,7 +23,7 @@ OBJS = $(SRCS:.c=.o)
 #si no hay librerias adicionales, no existe la variable $(LIBS),
 #por lo que se elimina $(LIBS) de la regla siguiente
 $(OUTPUT): $(OBJS)
-	$(CC) -o $(OUTPUT) $(OBJS) 
+	$(CC) -o $(OUTPUT) $(OBJS) $(LIBS)
 
 #REGLA 2: genera los .o cuando es necesario, dependencia de los .c y .h
 #solo genera los .o necesarios por cambios en los .c o .h

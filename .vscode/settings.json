@@ -18,6 +18,7 @@
         "string": "c",
         "unordered_map": "c",
         "vector": "c",
-        "atomic": "c"
+        "atomic": "c",
+        "stdio.h": "c"
     }
 }

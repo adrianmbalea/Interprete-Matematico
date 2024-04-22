@@ -10,7 +10,7 @@
 void inicializarTS();
 
 /**
- * @brief Inserta un elemento en la TS, si no existe ya
+ * @brief Inserta un elemento en la TS, si no existe ya. En caso de que exista y sea una variable, modifica su valor
  * 
  * @param lexema Lexema del elemento
  * @param compLex Componente lexico del elemento
@@ -32,12 +32,11 @@ void eliminarLex(char* lexema);
 void imprimirTS();
 
 /**
- * @brief Comprueba si un identificador esta asociado a una funcion
+ * @brief Busca un componente a partir de su lexema
  * 
- * @param id identificador a comprobar
- * @return int 1 si es una función, 0 en caso contrario
+ * @param lexema lexema del componente a buscar 
  */
-int esFuncion(char* id);
+componente buscarComponente(char* lexema);
 
 /**
  * @brief Libera la memoria de la TS

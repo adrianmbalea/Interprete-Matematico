@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../includes/abb.h"
+#include "../includes/sintactico.tab.h"
 
 //ESTRUCTURAS DE DATOS
 
@@ -44,6 +45,7 @@ int insertarElementoAbb(ABB *A, char* lexema, int compLex, union Valor valor) {
     int comp = strcmp(lexema, (*A)->info.lexema);
 
     if (comp == 0) { //lexema == (*A)->info.lexema
+        if((*A)->info.compLex==VAR) (*A)->info.valor=valor;
         return (*A)->info.compLex;
     }
     if (comp > 0) { //lexema > (*A)->info.lexema
@@ -131,3 +133,4 @@ void imprimirAbb(ABB A){
 		imprimirAbb(A->der);
     }
 }
+

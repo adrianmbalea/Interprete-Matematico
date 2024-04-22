@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "../includes/ts.h"
 #include "../includes/errores.h"
-#include "../includes/sintactico.h"
+#include "../includes/sintactico.tab.h"
 #include "../includes/lex.yy.h"
 
 int main(int argc, char **argv){
@@ -10,7 +10,7 @@ int main(int argc, char **argv){
     if(argc==2){
         nombreArchivo=*(argv+1);
     } else if(argc>2){
-        imprimirError(NUM_PARAMETROS_INCORRECTO, 1);
+        imprimirError(NUM_PARAMETROS_INCORRECTO);
         exit(EXIT_FAILURE);
     }
 
@@ -19,7 +19,8 @@ int main(int argc, char **argv){
     inicializarTS();
     imprimirTS();
 
-    iniciarSintactico();
+    //iniciarSintactico();
+    yyparse();
 
     imprimirTS();
     
