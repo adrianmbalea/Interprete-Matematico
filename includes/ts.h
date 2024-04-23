@@ -44,4 +44,16 @@ componente buscarComponente(char* lexema);
  */
 void liberarTS();
 
+/**
+ * @brief Imprime el WS, esto es, las variables y su valor actual
+ * 
+ */
+void imprimirWorkSpace();
+
+/**
+ * @brief Limpia (elimina) el workspace
+ * 
+ */
+void clearWS();
+
 #endif	/* TS_H */

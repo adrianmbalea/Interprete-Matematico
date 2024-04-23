@@ -4,6 +4,7 @@
 #include "../includes/errores.h"
 #include "../includes/sintactico.tab.h"
 #include "../includes/lex.yy.h"
+#include "../includes/comandos.h"
 
 int main(int argc, char **argv){
     char* nombreArchivo=NULL;
@@ -14,19 +15,20 @@ int main(int argc, char **argv){
         exit(EXIT_FAILURE);
     }
 
-    abrirArchivo(nombreArchivo);
+    // Mostramos la ayuda del interprete
+    help();
 
     inicializarTS();
-    imprimirTS();
 
-    //iniciarSintactico();
-    yyparse();
-
-    imprimirTS();
+    /* Si no se ha pasado ningun nombre de archivo,
+    entonces abrirArchivo() establecerá el yyin a stdin*/
+    abrirArchivo(nombreArchivo);
     
-    liberarTS();
-
-    cerrarArchivo();
+    // Analisis sintactico
+    yyparse();
+    
+    // Salimos del programa correctamente en caso de algun error inesperado
+    quit();
 
     exit(EXIT_SUCCESS);
     

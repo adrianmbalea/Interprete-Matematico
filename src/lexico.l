@@ -28,7 +28,7 @@ EXPONENCIAL ({PARTE_DIGITOS}|{PUNTO_FLOTANTE})[eE][\+-]?{PARTE_DIGITOS}
 NUMERO_FLOTANTE ({PUNTO_FLOTANTE}|{EXPONENCIAL})
 
 /*Comentarios*/
-COMENTARIO \/\/.*|\/\*.*\*\/
+COMENTARIO #.*
 
 /* Operadores */
 OPERADOR_SIMPLE \+|-|\*|\/|%|\^|\<|\>|\(|\)|,|\.|;|=
@@ -42,13 +42,16 @@ POR_IGUAL \*=
 SLASH_IGUAL \/=
 PORCENTAJE_IGUAL %=
 
+/* String */
+STRING \".*\"|\'.*\'
+
 %%
 
 {ID}                {
                         yylval.cadena = strdup(yytext);
                         componente comp = buscarComponente(yylval.cadena);
                         if(comp.lexema==NULL) return VAR;
-                        else return comp.compLex;
+                        return comp.compLex;
                     }
 
 {NUMERO_ENTERO}     { yylval.numero = atof(yytext); return NUM; }
@@ -65,7 +68,7 @@ PORCENTAJE_IGUAL %=
 {SLASH_IGUAL}       { return SLASH_IGUAL; }
 {PORCENTAJE_IGUAL}  { return PORCENTAJE_IGUAL; }
 
-
+{STRING}            { yylval.cadena=strdup(yytext); return STRING; }
 {COMENTARIO}        /* ignoramos los comentarios */
 
 \n                  { return '\n'; }
@@ -74,32 +77,40 @@ PORCENTAJE_IGUAL %=
 
 .                   { imprimirError(LEXEMA_MAL_FORMADO); }
 
-<<EOF>> { yyterminate(); }
+<<EOF>>             { cerrarArchivo(); return '\n'; }
 
 %%
 
-int fichero=0;
-
 void abrirArchivo(char *filename){
-    // Si no se ejecuta ningun archivo
+    // Si no se pasa ningun archivo
     if(filename==NULL){
+        script=0;
         yyin = stdin;
     } else{
         FILE *fp;
         fp=fopen(filename, "r");
         if(fp == NULL){
             imprimirError(ERROR_ARCHIVO);
+            script=0;
             yyin = stdin;
         } else{
+            script=1;
             yyin = fp;
-            fichero = 1;
         }
     }
 }
 
 void cerrarArchivo(){
-    if (fichero==1 && yyin != NULL) {
+    if (script==1 && yyin != NULL) {
         fclose(yyin);
+        script=0;
+        yyrestart(stdin);
+        yyin = stdin;
+    }
+}
+
+void liberarLexico(){
+    if (yyin != NULL) {
         yyin = NULL;
     }
     yylex_destroy(); 

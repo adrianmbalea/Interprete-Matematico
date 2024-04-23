@@ -126,11 +126,80 @@ void buscarNodoAbb(ABB A, char *lexema, componente* componente) {
     }
 }
 
+/**
+ * @brief Imprime todo el ABB, imprimiendo cada elemento con su tipo y sus valores asociados
+ * 
+ * @param A Arbol a imprimir
+ */
 void imprimirAbb(ABB A){
     if(!esAbbVacio(A)){
 		imprimirAbb(A->izq);
-        printf("<%d, \"%s\">\n", A->info.compLex, A->info.lexema);
+        switch(A->info.compLex){
+            case VAR:
+                printf("<VAR, %s, %g>\n", A->info.lexema, A->info.valor.var);
+                break;
+            case CONST:
+                printf("<CONST, %s, %g>\n", A->info.lexema, A->info.valor.var);
+                break;
+            case FUNC:
+                printf("<FUNC, %s>\n", A->info.lexema);
+                break;
+            case CMD:
+                printf("<CMD, %s>\n", A->info.lexema);
+                break;
+            default:
+                return;
+        }
 		imprimirAbb(A->der);
+    }
+}
+
+/**
+ * @brief Imprime los elementos del ABB cuyo componente léxico sea el pasado por parametro
+ * 
+ * @param A arbol a imprimir
+ * @param compLex componente lexico a buscar
+ */
+void imprimirCompLex(ABB A, int compLex){
+    if(!esAbbVacio(A)){
+		imprimirCompLex(A->izq, compLex);
+        if(A->info.compLex==compLex) {
+            switch(compLex){
+                case VAR:
+                    printf("<%s, %g>\n", A->info.lexema, A->info.valor.var);
+                    break;
+                case CONST:
+                    printf("<%s, %g>\n", A->info.lexema, A->info.valor.var);
+                    break;
+                case FUNC:
+                    printf("<%s>\n", A->info.lexema);
+                    break;
+                case CMD:
+                    printf("<%s>\n", A->info.lexema);
+                    break;
+                default:
+                    return;
+            }
+            
+        }
+		imprimirCompLex(A->der, compLex);
+    }
+}
+
+/**
+ * @brief Busca y almacena el lexema de la primera variable que encuentre
+ * 
+ * @param A arbol donde se busca la variable
+ * @param variable cadena donde se almacena el lexema
+ */
+void buscarVariable(ABB A, char** variable){
+    if(!esAbbVacio(A) && *variable==NULL){
+		buscarVariable(A->izq, variable);
+        if(A->info.compLex==VAR) {
+            *variable=A->info.lexema;
+            return;
+        }
+		buscarVariable(A->der, variable);
     }
 }
 

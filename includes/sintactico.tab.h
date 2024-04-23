@@ -56,18 +56,20 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     NUM = 258,                     /* NUM  */
     VAR = 259,                     /* VAR  */
-    FUNC = 260,                    /* FUNC  */
-    CONST = 261,                   /* CONST  */
-    MENOR_IGUAL = 262,             /* MENOR_IGUAL  */
-    MAYOR_IGUAL = 263,             /* MAYOR_IGUAL  */
-    IGUAL_IGUAL = 264,             /* IGUAL_IGUAL  */
-    DISTINTO = 265,                /* DISTINTO  */
-    MAS_IGUAL = 266,               /* MAS_IGUAL  */
-    MENOS_IGUAL = 267,             /* MENOS_IGUAL  */
-    POR_IGUAL = 268,               /* POR_IGUAL  */
-    SLASH_IGUAL = 269,             /* SLASH_IGUAL  */
-    PORCENTAJE_IGUAL = 270,        /* PORCENTAJE_IGUAL  */
-    NEG = 271                      /* NEG  */
+    CONST = 260,                   /* CONST  */
+    FUNC = 261,                    /* FUNC  */
+    CMD = 262,                     /* CMD  */
+    STRING = 263,                  /* STRING  */
+    MENOR_IGUAL = 264,             /* MENOR_IGUAL  */
+    MAYOR_IGUAL = 265,             /* MAYOR_IGUAL  */
+    IGUAL_IGUAL = 266,             /* IGUAL_IGUAL  */
+    DISTINTO = 267,                /* DISTINTO  */
+    MAS_IGUAL = 268,               /* MAS_IGUAL  */
+    MENOS_IGUAL = 269,             /* MENOS_IGUAL  */
+    POR_IGUAL = 270,               /* POR_IGUAL  */
+    SLASH_IGUAL = 271,             /* SLASH_IGUAL  */
+    PORCENTAJE_IGUAL = 272,        /* PORCENTAJE_IGUAL  */
+    NEG = 273                      /* NEG  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -76,12 +78,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 16 "src/sintactico.y"
+#line 18 "src/sintactico.y"
 
     double      numero;
     char*       cadena; 
 
-#line 85 "./includes/sintactico.tab.h"
+#line 87 "./includes/sintactico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

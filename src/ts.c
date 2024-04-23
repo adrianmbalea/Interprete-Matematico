@@ -7,12 +7,13 @@
 #include "../includes/sintactico.tab.h"
 
 const componente palabrasReservadas[] = {
-    {"echo",        FUNC,       .valor.cmdptr=echo},
-    {"quit",        FUNC,       .valor.cmdptr=quit},
-    {"workspace",   FUNC,       .valor.cmdptr=workspace},
-    {"clear",       FUNC,       .valor.cmdptr=clear},
-    {"help",        FUNC,       .valor.cmdptr=help},
-    {"load",        FUNC,       .valor.cmdptr=load},
+    {"echo",        CMD,        .valor.cmdptr=echo},
+    {"quit",        CMD,        .valor.cmdptr=quit},
+    {"workspace",   CMD,        .valor.cmdptr=workspace},
+    {"clear",       CMD,        .valor.cmdptr=clear},
+    {"help",        CMD,        .valor.cmdptr=help},
+    {"load",        CMD,        .valor.cmdptr=load},
+    {"ts",          CMD,        .valor.cmdptr=imprimirTS},
 
     {"sin",         FUNC,       .valor.funcptr=sin},
     {"cos",         FUNC,       .valor.funcptr=cos},
@@ -105,4 +106,27 @@ void imprimirTS(){
     printf("-------------------- TABLA DE SIMBOLOS --------------------\n");
     imprimirAbb(ts);
     printf("-----------------------------------------------------------\n");
+}
+
+/**
+ * @brief Imprime el WS, esto es, las variables y su valor actual
+ * 
+ */
+void imprimirWorkSpace(){
+    printf("-------------------- WORKSPACE --------------------\n");
+    imprimirCompLex(ts, VAR);
+    printf("---------------------------------------------------\n");
+}
+
+/**
+ * @brief Limpia (elimina) el workspace
+ * 
+ */
+void clearWS(){
+    while(1){
+        char* variable = NULL;
+        buscarVariable(ts, &variable);
+        if(variable==NULL) return;
+        suprimirElementoAbb(&ts, variable);
+    }
 }

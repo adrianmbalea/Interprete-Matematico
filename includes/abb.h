@@ -26,19 +26,35 @@ void destruirAbb(ABB *A);
 
 
 //FUNCIONES DE INFORMACIÓN
-/**
- * Comprueba si el arbol esta vacio
- * @param A El arbol binario
- */
 unsigned esAbbVacio(ABB A);
 
 void buscarNodoAbb(ABB A, char *lexema, componente* elemento);
 
+/**
+ * @brief Imprime todo el ABB, imprimiendo cada elemento con su tipo y sus valores asociados
+ * 
+ * @param A Arbol a imprimir
+ */
 void imprimirAbb(ABB A);
 
+/**
+ * @brief Imprime los elementos del ABB cuyo componente léxico sea el pasado por parametro
+ * 
+ * @param A arbol a imprimir
+ * @param compLex componente lexico a buscar
+ */
+void imprimirCompLex(ABB A, int compLex);
+
+/**
+ * @brief Busca y almacena el lexema de la primera variable que encuentre
+ * 
+ * @param A arbol donde se busca la variable
+ * @param variable cadena donde se almacena el lexema
+ */
+void buscarVariable(ABB A, char** variable);
 
 
-
+// FUNCIONES DE MODIFICACION
 
 int insertarElementoAbb(ABB *A, char* lexema, int compLex, union Valor valor);
 

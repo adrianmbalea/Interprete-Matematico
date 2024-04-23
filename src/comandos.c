@@ -1,150 +1,103 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <strings.h>
+#include <string.h>
 
 #include "../includes/definiciones.h"
+#include "../includes/lex.yy.h"
+#include "../includes/sintactico.tab.h"
 #include "../includes/comandos.h"
 #include "../includes/errores.h"
-
-int imprimirResultados = 1;
-
-/**
- * @brief Procesa los parametros de los diferentes comandos que puede haber
- * 
- * @param parametros parametro de entrada, es la cadena de caracteres en la que el usuario pasa los parametros separados por comas
- * @param argc parametro de salida, es el numero de parametros que hay
- * @param argv parametro de salida, es el array de parametros que el usuario ha pasado
- */
-void _procesarParametros(char *parametros, int *argc, char ***argv) {
-    // Contar el número de parámetros
-    *argc = 0;
-    char *copia = strdup(parametros);
-    char *token = strtok(copia, ",");
-    while (token != NULL) {
-        (*argc)++;
-        token = strtok(NULL, ",");
-    }
-    free(copia);
-
-    *argv = (char**)malloc((*argc) * sizeof(char*));
-    copia = strdup(parametros);
-    int i = 0;
-    token = strtok(copia, ",");
-    while (token != NULL) {
-        (*argv)[i] = strdup(token);
-        i++;
-        token = strtok(NULL, ",");
-    }
-    free(copia);
-}
+#include "../includes/ts.h"
 
 /**
- * @brief Libera la memoria de los parametros que pasa el usuario
+ * @brief Permite imprimir o no los resultados de las próximas expresiones 
  * 
- * @param argc numero de parametros
- * @param argv array de parametros
+ * @param valor Valor que indica si se imprimen o no, puede ser "on" u "off"
  */
-void _liberarParametros(int argc, char ***argv) {
-    for (int i = 0; i < argc; i++) {
-        free((*argv)[i]);
-    }
-
-    free(*argv);
-    *argv = NULL;
-}
-
-void echo(char* parametro){
-    if(!strcasecmp(parametro, "on")){
-        imprimirResultados=1;
-    } else if(!strcasecmp(parametro, "off")){
-        imprimirResultados=0;
+void echo(char* valor){
+    if(!strcasecmp(valor, "\"on\"") || !strcasecmp(valor, "\'on\'")){
+        imprimirResultados = 1;
+    } else if(!strcasecmp(valor, "\"off\"") || !strcasecmp(valor, "\'off\'")){
+        imprimirResultados = 0;
     } else {
         imprimirError(PARAMETROS_INCORRECTOS_FUNC);
     }
-
     return;
 }
 
-void quit(char* parametros){
-    int argc;
-    char **argv;
-    _procesarParametros(parametros, &argc, &argv);
-
-    if(argc!=0){
-        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
-        _liberarParametros(argc, &argv);
-        return;
-    }
-
-    _liberarParametros(argc, &argv);
-    // todo: liberar toda la memoria y salir del programa
+/**
+ * @brief Permite salir del programa
+ * 
+ */
+void quit(){
+    liberarTS();
+    cerrarArchivo();
+    liberarLexico();
+    exit(EXIT_SUCCESS);
 }
 
-void workspace(char* parametros){
-    int argc;
-    char **argv;
-    _procesarParametros(parametros, &argc, &argv);
-
-    if(argc!=0){
-        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
-        _liberarParametros(argc, &argv);
-        return;
-    }
-
-    // todo: imprimir workspace
-
-    _liberarParametros(argc, &argv);
-    return;
+/**
+ * @brief Muestra el histórico de variables empleadas y sus respectivos valores
+ * 
+ */
+void workspace(){
+    printf("WORKSPACE:\n");
+    imprimirWorkSpace();
 }
 
-void clear(char* parametros){
-    int argc;
-    char **argv;
-    _procesarParametros(parametros, &argc, &argv);
-
-    if(argc!=0){
-        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
-        _liberarParametros(argc, &argv);
-        return;
-    }
-
-    // todo: borrar workspace
-
-    _liberarParametros(argc, &argv);
-    return;
+/**
+ * @brief Elimina todo el workspace actual
+ * 
+ */
+void clear(){
+    clearWS();
 }
 
-void help(char* parametros){
-    int argc;
-    char **argv;
-    _procesarParametros(parametros, &argc, &argv);
-
-    if(argc!=0){
-        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
-        _liberarParametros(argc, &argv);
-        return;
-    }
-
-    // todo: imprimir ayuda
-
-    _liberarParametros(argc, &argv);
-    return;
+/**
+ * @brief Muestra la ayuda
+ * 
+ */
+void help() {
+    printf("Bienvenido al intérprete matemático!\n\n");
+    printf("El intérprete matemático es una herramienta diseñada para realizar cálculos\ny evaluaciones de expresiones matemáticas de forma interactiva. \nPermite a los usuarios ingresar expresiones matemáticas complejas y\nobtener resultados precisos de manera rápida y eficiente.\n");
+    printf("\n");
+    printf("Además de las expresiones y operadores esperados que \npueda soportar este intérprete, también puede ejecutar\nlas siguientes funciones matemáticas:\n");
+    printf("- `sin()`, `cos()`, `tan()`, `asin()`, `acos()`, `atan()`, `pow()`,\n  `sqrt()`, `cbrt()`, `log()`, `log10()`, `log2()`, `round()`,\n  `floor()`, `ceil()`, `fabs()`, `exp()`, `exp2()`.\n");
+    printf("\n");
+    printf("A mayores, cuenta con las constantes `pi` y `e`.\n");
+    printf("\n");
+    printf("También cabe mencionar también la existencia de los siguientes comandos:\n");
+    printf("- `echo(\"on\")`/`echo(\"off\")`: Permite imprimir o no los resultados de las próximas expresiones.\n");
+    printf("- `quit()`: Permite salir del programa.\n");
+    printf("- `workspace()`: Muestra el histórico de variables empleadas y sus respectivos valores.\n");
+    printf("- `clear()`: Elimina todo el workspace actual.\n");
+    printf("- `load(\"fichero\")`: Carga un fichero de código y lo ejecuta.\n");
+    printf("- `help()`: Muestra la ayuda.\n\n\n");
 }
 
-void load(char* parametros){
-    int argc;
-    char **argv;
-    _procesarParametros(parametros, &argc, &argv);
 
-    if(argc!=0){
-        imprimirError(PARAMETROS_INCORRECTOS_FUNC);
-        _liberarParametros(argc, &argv);
-        return;
+
+/**
+ * @brief Elimina las comillas (ya sean dobles o simples) de una cadena
+ * 
+ * @param cadena la cadena a eliminar las comillas
+ */
+void _eliminarComillas(char* cadena) {
+    size_t longitud = strlen(cadena);
+
+    if (longitud >= 2 && (cadena[0] == '\'' || cadena[0] == '"') && cadena[longitud - 1] == cadena[0]) {
+        memmove(cadena, cadena + 1, longitud - 2);
+        cadena[longitud - 2] = '\0';
     }
+}
 
-    // todo: cargar fichero
-
-    _liberarParametros(argc, &argv);
-    return;
+/**
+ * @brief Carga un fichero de código y lo ejecuta
+ * 
+ * @param fichero fichero a ejecutar
+ */
+void load(char *fichero){
+    _eliminarComillas(fichero);
+    abrirArchivo(fichero);
 }
